@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Study Insights | LifeLens AI</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="assets/logo.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="insights.css">
+    <link rel="stylesheet" href="pwa-ui.css">
+</head>
+<body class="insights-page">
+<header>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <img src="assets/logo.png" alt="LifeLens AI logo" class="logo-img">
+            <span class="logo-text"><span class="logo-blue">LifeLens</span> AI</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="planner.html">Planner</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="insights.html" aria-current="page">Study Insights</a></li>
+        </ul>
+        <a href="planner.html" class="btn-start">Plan Today</a>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">🌙</button>
+        <button class="hamburger" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+    </nav>
+</header>
+
+<main class="insights-main">
+    <section class="insights-hero">
+        <div>
+            <p class="section-label">WEEKLY INTELLIGENCE</p>
+            <h1>Your study patterns, explained.</h1>
+            <p id="insights-period">LifeLens is preparing your latest seven-day report.</p>
+        </div>
+        <div class="insights-actions">
+            <button id="refresh-insights" class="primary-button" type="button">Refresh report</button>
+            <button id="copy-insights" class="secondary-button" type="button">Copy summary</button>
+        </div>
+    </section>
+
+    <section class="insights-score-card" aria-labelledby="weekly-score-title">
+        <div>
+            <p class="section-label">WEEKLY SCORE</p>
+            <h2 id="weekly-score-title"><span id="weekly-score">0</span><small>/100</small></h2>
+            <p id="weekly-score-label">Complete tasks to build your score.</p>
+        </div>
+        <div class="score-ring" id="score-ring" aria-hidden="true"><span id="score-ring-value">0%</span></div>
+    </section>
+
+    <section class="insights-metrics" aria-label="Weekly study metrics">
+        <article class="insight-metric"><span>✅</span><p>Tasks completed</p><strong id="metric-tasks">0</strong><small id="metric-tasks-change">No previous-week comparison</small></article>
+        <article class="insight-metric"><span>⏱️</span><p>Focused time</p><strong id="metric-time">0 min</strong><small id="metric-time-change">Complete timed tasks to measure</small></article>
+        <article class="insight-metric"><span>🎯</span><p>Planning accuracy</p><strong id="metric-accuracy">0%</strong><small id="metric-accuracy-note">No timing samples yet</small></article>
+        <article class="insight-metric"><span>🔥</span><p>Current streak</p><strong id="metric-streak">0 days</strong><small id="metric-xp">0 XP earned</small></article>
+    </section>
+
+    <section class="insights-layout">
+        <article class="insights-panel report-panel">
+            <div class="panel-heading"><div><p class="section-label">AI WEEKLY INSIGHTS</p><h2>This week at a glance</h2></div><span class="status-pill">Based on your data</span></div>
+            <div id="weekly-report" class="weekly-report"></div>
+        </article>
+
+        <aside class="insights-panel">
+            <p class="section-label">STRONGEST SIGNALS</p>
+            <h2>What stands out</h2>
+            <div class="signal-list" id="signal-list"></div>
+        </aside>
+    </section>
+
+    <section class="insights-layout lower-layout">
+        <article class="insights-panel">
+            <p class="section-label">SUBJECT BALANCE</p>
+            <h2>Where your time went</h2>
+            <div id="subject-bars" class="subject-bars"></div>
+        </article>
+        <article class="insights-panel">
+            <p class="section-label">NEXT WEEK</p>
+            <h2>Recommended adjustments</h2>
+            <ol id="recommendation-list" class="recommendation-list"></ol>
+        </article>
+    </section>
+
+    <section class="insights-empty" id="insights-empty" hidden>
+        <div>📚</div><h2>More data will unlock better insights</h2>
+        <p>Complete tasks and record actual durations in the Planner. LifeLens will then compare your estimates, subjects, and study times.</p>
+        <a href="planner.html" class="primary-button">Open Planner</a>
+    </section>
+</main>
+<script type="module" src="js/main.js?v=20260802-insights"></script>
+<script type="module" src="js/insights.js?v=2"></script>
+<script defer src="js/pwa.js?v=2"></script>
+</body>
+</html>

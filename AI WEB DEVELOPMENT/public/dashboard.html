@@ -1,0 +1,746 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Review your weekly productivity and adaptive learning insights with LifeLens AI."
+    >
+
+    <title>Dashboard | LifeLens AI</title>
+
+    <link rel="stylesheet" href="style.css?v=33-dashboard2">
+    <link rel="stylesheet" href="dashboard-charts.css?v=16-dashboard2">
+    <link rel="stylesheet" href="pwa-ui.css?v=2">
+    <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#2563eb">
+
+<link
+    rel="apple-touch-icon"
+    href="assets/icon-192.png"
+>
+</head>
+
+<body class="dashboard-page">
+
+    <header>
+        <nav class="navbar">
+
+            <a href="index.html" class="logo">
+                <img
+                    src="assets/logo.png"
+                    alt="LifeLens AI logo"
+                    class="logo-img"
+                >
+
+                <span class="logo-text">
+                    <span class="logo-blue">LifeLens</span>
+                    AI
+                </span>
+            </a>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+
+                <li>
+                    <a href="planner.html">Planner</a>
+                </li>
+
+                <li>
+                    <a
+                        href="dashboard.html"
+                        aria-current="page"
+                    >
+                        Dashboard
+                    </a>
+                </li>
+
+                <li>
+                    <a href="insights.html">Study Insights</a>
+                </li>
+            </ul>
+
+            <a
+                href="planner.html"
+                class="btn-start"
+            >
+                Plan Today
+            </a>
+            <button
+    type="button"
+    class="theme-toggle"
+    id="theme-toggle"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
+>
+    🌙
+</button>
+<button
+    type="button"
+    class="install-app-button"
+    id="install-app-button"
+    hidden
+>
+    Install LifeLens
+</button>
+            <button
+                class="hamburger"
+                type="button"
+                aria-label="Open navigation menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+
+        <section class="dashboard-intro">
+
+            <p class="section-label">
+                WEEKLY PRODUCTIVITY
+            </p>
+
+            <h1>
+                Your progress at a glance
+            </h1>
+
+            <p>
+                LifeLens combines your completed-task history
+                and adaptive learning data into practical insights.
+            </p>
+
+        </section>
+
+        <section class="dashboard-summary">
+
+            <article class="dashboard-stat-card">
+                <span>Completed tasks</span>
+
+                <strong id="completed-task-count">
+                    0
+                </strong>
+
+                <p>This week</p>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span>Average actual time</span>
+
+                <strong id="average-actual-time">
+                    0 min
+                </strong>
+
+                <p>Per completed task</p>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span>Planning accuracy</span>
+
+                <strong id="planning-accuracy">
+                    0%
+                </strong>
+
+                <p>Planned versus actual</p>
+            </article>
+
+            <article class="dashboard-stat-card">
+                <span>Most practiced task</span>
+
+                <strong id="most-practiced-task">
+                    —
+                </strong>
+
+                <p>Based on learning history</p>
+            </article>
+
+        </section>
+
+        <section class="productivity-score-panel" aria-labelledby="productivity-score-title">
+            <div class="productivity-score-ring" id="productivity-score-ring" style="--score: 0">
+                <div>
+                    <strong id="productivity-score">0</strong>
+                    <span>/ 100</span>
+                </div>
+            </div>
+
+            <div class="productivity-score-copy">
+                <p class="section-label">LIFELENS SCORE</p>
+                <h2 id="productivity-score-title">Your weekly productivity score</h2>
+                <p id="productivity-score-message">Complete tasks to generate your score.</p>
+
+                <div class="score-breakdown" aria-label="Productivity score breakdown">
+                    <div><span>Completion</span><strong id="score-completion">0</strong></div>
+                    <div><span>Accuracy</span><strong id="score-accuracy">0</strong></div>
+                    <div><span>Consistency</span><strong id="score-consistency">0</strong></div>
+                </div>
+            </div>
+            <a href="insights.html" class="primary-button" style="margin-top: 1rem; display: inline-flex;">
+                Open Weekly Study Insights
+            </a>
+        </section>
+
+        <section class="dashboard-grid">
+
+            <article class="dashboard-card weekly-chart-card">
+
+                <div class="dashboard-card-heading weekly-card-heading">
+                    <div>
+                        <p class="section-label">
+                            DAILY ACTIVITY
+                        </p>
+
+                        <h2>
+                            Tasks completed this week
+                        </h2>
+
+                        <p class="weekly-chart-subtitle">
+                            See how productive you have been each day.
+                        </p>
+                    </div>
+
+                    <div class="weekly-range-controls" aria-label="Choose week">
+                        <button type="button" id="previous-week-button" class="weekly-range-button" aria-label="Show previous week">‹</button>
+                        <div id="weekly-date-range" class="weekly-date-range" aria-live="polite"></div>
+                        <button type="button" id="next-week-button" class="weekly-range-button" aria-label="Show next week">›</button>
+                    </div>
+                </div>
+
+                <div
+                    id="weekly-bars"
+                    class="weekly-bars"
+                    aria-label="Weekly completed tasks chart"
+                ></div>
+
+            </article>
+
+            <article class="dashboard-card">
+
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">
+                            TIME ACCURACY
+                        </p>
+
+                        <h2>
+                            Planned versus actual
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="accuracy-summary">
+
+                    <div>
+                        <span>Planned time</span>
+
+                        <strong id="total-planned-time">
+                            0 min
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Actual time</span>
+
+                        <strong id="total-actual-time">
+                            0 min
+                        </strong>
+                    </div>
+
+                </div>
+
+                <div class="accuracy-track">
+                    <div
+                        id="accuracy-fill"
+                        class="accuracy-fill"
+                    ></div>
+                </div>
+
+                <p
+                    id="accuracy-message"
+                    class="dashboard-message"
+                >
+                    Complete tasks to begin measuring your
+                    planning accuracy.
+                </p>
+
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">TASK MIX</p>
+                        <h2>Priority distribution</h2>
+                    </div>
+                </div>
+
+                <div class="priority-chart-layout">
+                    <div class="priority-donut" id="priority-donut" aria-label="Priority distribution chart">
+                        <div class="priority-donut-center">
+                            <strong id="priority-total">0</strong>
+                            <span>tasks</span>
+                        </div>
+                    </div>
+
+                    <ul class="priority-legend">
+                        <li><i class="priority-dot high"></i><span>High</span><strong id="priority-high-count">0</strong></li>
+                        <li><i class="priority-dot medium"></i><span>Medium</span><strong id="priority-medium-count">0</strong></li>
+                        <li><i class="priority-dot low"></i><span>Low</span><strong id="priority-low-count">0</strong></li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">TIME COMPARISON</p>
+                        <h2>Planned and actual by task</h2>
+                    </div>
+                </div>
+
+                <div id="time-comparison-chart" class="time-comparison-chart" aria-label="Planned versus actual time chart"></div>
+            </article>
+
+            <article class="dashboard-card dashboard-v2-card">
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">STUDY DISTRIBUTION</p>
+                        <h2>Subjects and activity types</h2>
+                    </div>
+                </div>
+
+                <div class="subject-distribution-layout">
+                    <div id="subject-donut" class="subject-donut" aria-label="Study subject distribution chart">
+                        <div class="subject-donut-center">
+                            <strong id="subject-total-time">0 min</strong>
+                            <span>studied</span>
+                        </div>
+                    </div>
+                    <ul id="subject-legend" class="subject-legend">
+                        <li class="chart-empty-message">Complete tasks to reveal your study mix.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="dashboard-card dashboard-v2-card">
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">PEAK PRODUCTIVITY</p>
+                        <h2>Your strongest study time</h2>
+                    </div>
+                </div>
+
+                <div class="peak-productivity-result">
+                    <div class="peak-time-icon" aria-hidden="true">⏱️</div>
+                    <div>
+                        <strong id="peak-productivity-time">—</strong>
+                        <p id="peak-productivity-message">Complete tasks at different times to identify your best focus window.</p>
+                    </div>
+                </div>
+                <div id="time-of-day-bars" class="time-of-day-bars" aria-label="Completed study time by time of day"></div>
+            </article>
+
+            <article class="dashboard-card dashboard-v2-card smart-insights-card">
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">SMART INSIGHTS</p>
+                        <h2>What your data suggests</h2>
+                    </div>
+                    <span class="dashboard-v2-badge">Personalized</span>
+                </div>
+                <ul id="smart-dashboard-insights" class="smart-dashboard-insights">
+                    <li>Complete tasks to unlock personalized weekly insights.</li>
+                </ul>
+            </article>
+
+            <article class="dashboard-card recent-insights-card">
+
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">
+                            ADAPTIVE LEARNING
+                        </p>
+
+                        <h2>
+                            Recent LifeLens insights
+                        </h2>
+                    </div>
+                </div>
+
+                <ul
+                    id="recent-learning-list"
+                    class="recent-learning-list"
+                >
+                    <li>
+                        No learning history is available yet.
+                    </li>
+                </ul>
+
+            </article>
+
+
+
+            <article class="dashboard-card daily-review-card" id="daily-review-card">
+                <div class="dashboard-card-heading daily-review-heading">
+                    <div>
+                        <p class="section-label">DAILY REVIEW</p>
+                        <h2>Today’s productivity summary</h2>
+                        <p id="daily-review-date" class="daily-review-date"></p>
+                    </div>
+                    <span id="daily-review-status-badge" class="daily-review-status-badge">Live</span>
+                </div>
+
+                <div class="daily-review-stats">
+                    <div><span>Completed</span><strong id="daily-review-completed">0 / 0</strong></div>
+                    <div><span>Completion rate</span><strong id="daily-review-rate">0%</strong></div>
+                    <div><span>Planned time</span><strong id="daily-review-planned">0 min</strong></div>
+                    <div><span>Actual time</span><strong id="daily-review-actual">0 min</strong></div>
+                    <div><span>Time difference</span><strong id="daily-review-difference">0 min</strong></div>
+                    <div><span>Planning accuracy</span><strong id="daily-review-accuracy">0%</strong></div>
+                </div>
+
+                <div class="daily-review-details">
+                    <div class="daily-review-highlight">
+                        <span>Most efficient task</span>
+                        <strong id="daily-review-efficient">—</strong>
+                    </div>
+                    <div class="daily-review-highlight">
+                        <span>Task needing more time</span>
+                        <strong id="daily-review-longest">—</strong>
+                    </div>
+                </div>
+
+                <div class="daily-review-recommendation">
+                    <span>LifeLens recommendation</span>
+                    <p id="daily-review-recommendation">Complete tasks today to generate a personalized recommendation.</p>
+                </div>
+
+                <div class="daily-review-actions">
+                    <button type="button" class="primary-button daily-review-save" id="save-daily-review-button">Save today’s review</button>
+                    <button type="button" class="secondary-button daily-review-move" id="move-unfinished-button">Move unfinished tasks to tomorrow</button>
+                </div>
+                <p id="daily-review-action-message" class="daily-review-action-message" aria-live="polite"></p>
+
+                <details class="daily-review-history">
+                    <summary>Previous saved reviews</summary>
+                    <div id="daily-review-history-list" class="daily-review-history-list"></div>
+                </details>
+            </article>
+
+            <!-- ================= PRODUCTIVITY HEATMAP ================= -->
+<article class="dashboard-card xp-card">
+    <div class="xp-card-top">
+        <div>
+            <p class="section-label">PROGRESS</p>
+            <h2>Your Level</h2>
+        </div>
+
+        <div class="xp-level-badge">
+            Level <span id="xp-level">1</span>
+        </div>
+    </div>
+
+    <div class="xp-progress-track">
+        <div
+            id="xp-progress-fill"
+            class="xp-progress-fill"
+        ></div>
+    </div>
+
+    <div class="xp-progress-info">
+        <span id="xp-current">0 XP</span>
+        <span id="xp-next">100 XP needed</span>
+    </div>
+
+    <p id="xp-message" class="dashboard-message">
+        Complete tasks and save daily reviews to gain XP.
+    </p>
+</article>
+
+
+<article class="dashboard-card ai-coach-card" id="ai-coach-card">
+    <div class="dashboard-card-heading ai-coach-heading">
+        <div>
+            <p class="section-label">AI COACH</p>
+            <h2>Today’s Progress Coach</h2>
+            <p class="dashboard-message">
+                A quick summary of your progress and the best next action.
+            </p>
+        </div>
+        <span class="ai-coach-status">Live</span>
+    </div>
+
+    <div class="ai-coach-metrics">
+        <div>
+            <span>Completion rate</span>
+            <strong id="ai-coach-rate">0%</strong>
+        </div>
+        <div>
+            <span>Current rank</span>
+            <strong id="ai-coach-rank">Starter</strong>
+        </div>
+        <div>
+            <span>XP to next rank</span>
+            <strong id="ai-coach-next">100 XP</strong>
+        </div>
+        <div>
+            <span>Current streak</span>
+            <strong id="ai-coach-streak">0 days</strong>
+        </div>
+    </div>
+
+    <div class="ai-coach-recommendation">
+        <span>Recommended next action</span>
+        <p id="ai-coach-action">
+            Generate today’s plan, then complete your first scheduled task.
+        </p>
+    </div>
+</article>
+
+<article class="dashboard-card heatmap-card">
+
+    <div class="dashboard-card-heading">
+        <div>
+            <p class="section-label">
+                CONSISTENCY
+            </p>
+
+            <h2>
+                Productivity Heatmap
+            </h2>
+
+            <p class="dashboard-message">
+                Your last 12 weeks of productivity.
+            </p>
+        </div>
+    </div>
+
+    <div class="heatmap-wrapper">
+
+        <div class="heatmap-left">
+
+            <div
+                id="heatmap-grid"
+                class="heatmap-grid"
+            ></div>
+
+            <div
+    id="heatmap-tooltip"
+    class="heatmap-tooltip"
+    role="tooltip"
+    hidden
+></div>
+
+        </div>
+
+        <aside class="heatmap-side">
+
+            <div class="heatmap-stat">
+
+                <span>🔥 Current streak</span>
+
+                <strong
+                    id="current-streak"
+                >
+                    0 days
+                </strong>
+
+            </div>
+
+            <div class="heatmap-stat">
+
+                <span>🏆 Longest streak</span>
+
+                <strong
+                    id="longest-streak"
+                >
+                    0 days
+                </strong>
+
+            </div>
+
+            <div class="heatmap-stat">
+
+                <span>⭐ Best weekday</span>
+
+                <strong
+                    id="best-weekday"
+                >
+                    —
+                </strong>
+
+            </div>
+
+            <div class="heatmap-stat">
+
+                <span>📈 Average completion</span>
+
+                <strong
+                    id="average-completion"
+                >
+                    0%
+                </strong>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+    <div
+        id="heatmap-detail"
+        class="heatmap-detail"
+    >
+
+        Click a square to view the saved review.
+
+    </div>
+
+    <div class="heatmap-legend">
+    <span>Less</span>
+
+    <i class="heatmap-legend-square level-0"></i>
+    <i class="heatmap-legend-square level-1"></i>
+    <i class="heatmap-legend-square level-2"></i>
+    <i class="heatmap-legend-square level-3"></i>
+    <i class="heatmap-legend-square level-4"></i>
+
+    <span>More</span>
+</div>
+
+</article>
+
+<article class="dashboard-card achievement-card">
+
+    <div class="dashboard-card-heading">
+
+        <div>
+
+            <p class="section-label">
+                MOTIVATION
+            </p>
+
+            <h2>
+                Achievements
+            </h2>
+
+            <p class="dashboard-message">
+                Unlock badges as you build better study habits.
+            </p>
+            <p id="achievement-summary" class="achievement-summary">
+                Loading achievement progress…
+            </p>
+
+        </div>
+
+    </div>
+
+    <div
+        id="achievement-list"
+        class="achievement-list"
+    ></div>
+
+    <div class="achievement-history-panel">
+        <h3>Recent unlocks</h3>
+        <ul id="achievement-history-list"></ul>
+    </div>
+
+</article>
+
+            <article class="dashboard-card">
+
+                <div class="dashboard-card-heading">
+                    <div>
+                        <p class="section-label">
+                            PRODUCTIVITY PATTERN
+                        </p>
+
+                        <h2>
+                            Your strongest day
+                        </h2>
+                    </div>
+                </div>
+
+                <div class="strongest-day-result">
+
+                    <strong id="strongest-day">
+                        —
+                    </strong>
+
+                    <p id="strongest-day-message">
+                        Complete tasks on different days to reveal
+                        your weekly pattern.
+                    </p>
+
+                </div>
+
+            </article>
+
+        </section>
+
+        <section class="dashboard-empty-state" id="dashboard-empty-state">
+
+            <div aria-hidden="true">
+                📊
+            </div>
+
+            <h2>
+                Your dashboard is ready to learn
+            </h2>
+
+            <p>
+                Complete tasks from the planner and record their
+                actual duration. Your weekly insights will appear here.
+            </p>
+
+            <a href="planner.html" class="primary-button">
+                Open AI Planner
+            </a>
+
+        </section>
+<div
+    id="level-up-popup"
+    class="level-up-popup"
+    role="status"
+    aria-live="polite"
+    hidden
+>
+    <div class="level-up-popup-icon">🎉</div>
+
+    <div>
+        <strong id="level-up-popup-title">
+            Level Up!
+        </strong>
+
+        <p id="level-up-popup-message">
+            You reached a new level.
+        </p>
+    </div>
+</div>
+    </main>
+
+    <script
+        type="module"
+        src="js/main.js?v=20260801-dashboard2"
+    ></script>
+
+    <script defer src="js/pwa.js?v=2"></script>
+</body>
+
+</html>

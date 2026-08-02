@@ -1,0 +1,377 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Create a personalized daily schedule with the LifeLens AI Planner." name="description"/>
+<title>AI Planner | LifeLens AI</title>
+<link href="style.css?v=4" rel="stylesheet"/>
+<link href="manifest.json" rel="manifest"/>
+<meta content="#2563eb" name="theme-color"/>
+<link href="assets/icon-192.png" rel="apple-touch-icon"/>
+<link href="pwa-ui.css" rel="stylesheet"/></head>
+<body class="planner-page">
+<header>
+<nav class="navbar">
+<a class="logo" href="index.html">
+<img alt="LifeLens AI logo" class="logo-img" src="assets/logo.png"/>
+<span class="logo-text">
+<span class="logo-blue">LifeLens</span> AI
+                </span>
+</a>
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="index.html#features">Features</a></li>
+<li><a href="index.html#how-it-works">How It Works</a></li>
+<li><a href="index.html#about">About</a></li>
+<li><a class="ai-coach-nav-link" href="#ai-coach">🤖 AI Coach</a></li>
+<li>
+<a href="dashboard.html">
+        Dashboard
+    </a>
+</li>
+</ul>
+<a class="btn-start" href="planner.html">
+    AI Planner
+</a>
+<button aria-label="Switch to dark mode" aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">
+    🌙
+</button>
+<button class="install-app-button" hidden="" id="install-app-button" type="button">
+    Install LifeLens
+</button>
+<button aria-expanded="false" aria-label="Open navigation menu" class="hamburger" type="button">
+    ☰
+</button>
+</nav>
+</header>
+<main class="planner-main">
+<section class="planner-intro">
+<p class="section-label">AI DAILY PLANNER</p>
+<h1>Plan your day more intelligently</h1>
+<p>
+                Enter your available time and daily tasks. LifeLens AI will
+                organize them into a realistic schedule.
+            </p>
+</section>
+<section class="planner-workspace">
+<div class="planner-form-panel">
+<div class="panel-heading">
+<h2>Create your schedule</h2>
+<p>
+                        Start by entering the time you are available.
+                    </p>
+<div class="planner-storage-status">
+<p aria-live="polite" id="save-status">
+        Changes are saved automatically.
+    </p>
+<button class="clear-planner-button" id="clear-planner-button" type="button">
+        Clear saved planner
+    </button>
+</div>
+</div>
+<form id="planner-form" novalidate="">
+<div class="form-row">
+<div class="form-group">
+<label for="start-time">Available from</label>
+<input id="start-time" name="startTime" required="" type="time"/>
+</div>
+<div class="form-group">
+<label for="end-time">Available until</label>
+<input id="end-time" name="endTime" required="" type="time"/>
+</div>
+</div>
+<div class="break-settings">
+<div class="break-setting-info">
+<div>
+<h3>Break settings</h3>
+<p>
+                                    Choose whether short breaks should be added between tasks.
+                                </p>
+</div>
+<label class="switch">
+<input checked="" id="break-toggle" type="checkbox"/>
+<span class="switch-slider"></span>
+<span class="switch-text">
+                                    Enable breaks
+                                </span>
+</label>
+</div>
+<div class="form-group break-duration-group">
+<label for="break-duration">
+                                Break duration
+                            </label>
+<div class="number-input-wrapper">
+<input id="break-duration" inputmode="numeric" max="60" min="5" name="breakDuration" step="5" type="number" value="10"/>
+<span>minutes</span>
+</div>
+<small>
+                                Choose between 5 and 60 minutes.
+                            </small>
+</div>
+</div>
+<div class="task-section">
+<div class="task-section-header">
+<div>
+<h3>Your tasks</h3>
+<p>Add the activities you need to complete today.</p>
+</div>
+<button class="add-task-button" id="add-task-button" type="button">
+                                + Add Task
+                            </button>
+</div>
+<div id="task-list">
+<div class="task-item">
+<div class="form-group task-name-group">
+<label for="task-name-1">Task name</label>
+<input class="task-name" id="task-name-1" maxlength="80" placeholder="Example: Mathematics homework" required="" type="text"/>
+</div>
+<div class="form-group">
+<label for="task-duration-1">Duration</label>
+<div class="task-duration-wrapper">
+<input class="task-duration" id="task-duration-1" inputmode="numeric" max="720" min="5" placeholder="Minutes" required="" step="5" type="number"/>
+<span>min</span>
+</div>
+<small class="task-duration-help">Any duration from 5 minutes to 12 hours.</small>
+</div>
+<div class="form-group">
+<label for="task-priority-1">Priority</label>
+<select class="task-priority" id="task-priority-1" required="">
+<option value="">Select</option>
+<option value="high">High</option>
+<option value="medium">Medium</option>
+<option value="low">Low</option>
+</select>
+</div>
+<div class="form-group">
+<label for="task-deadline-1">Deadline</label>
+<input class="task-deadline" id="task-deadline-1" type="time"/>
+</div>
+<p class="learning-suggestion" hidden=""></p>
+<button aria-label="Remove task" class="remove-task-button" disabled="" type="button">
+                                    ×
+                                    
+                                </button>
+</div>
+</div>
+</div>
+<div class="quick-task-section">
+<div class="quick-task-heading">
+<div>
+<p class="quick-task-label">SMART TASK INPUT</p>
+<h3>Describe your day naturally</h3>
+<p>
+                                    LifeLens will identify tasks, durations, priorities,
+                                    and deadlines from your sentence.
+                                </p>
+</div>
+</div>
+<label class="sr-only" for="natural-task-input">
+                            Describe your tasks
+                        </label>
+<textarea id="natural-task-input" maxlength="600" placeholder="Example: Study mathematics for 1 hour, finish chemistry homework for 45 minutes before 6 PM, and exercise for 30 minutes." rows="5"></textarea>
+<div class="quick-task-actions">
+<p aria-live="polite" id="natural-task-message"></p>
+<button class="parse-tasks-button" id="parse-tasks-button" type="button">
+                                ✨ Add tasks automatically
+                            </button>
+</div>
+</div>
+<button class="planner-submit-button" type="submit">
+                        Generate Schedule
+                        <span aria-hidden="true">→</span>
+</button>
+</form>
+<p aria-live="polite" class="planner-message" id="planner-message" role="status"></p>
+</div>
+<aside class="planner-result-panel" id="schedule-output">
+<div class="result-placeholder">
+<div aria-hidden="true" class="result-icon">✨</div>
+<h2>Your schedule will appear here</h2>
+<p>
+                        Complete the form to begin building your personalized daily plan.
+                    </p>
+</div>
+</aside>
+</section>
+<section class="planner-analysis-section" hidden="" id="planner-analysis">
+<div class="analysis-heading">
+<p class="section-label">LIFELENS ANALYSIS</p>
+<h2>Your schedule insights</h2>
+<p>
+                    LifeLens evaluates your deadlines, workload, and break balance.
+                </p>
+</div>
+<div class="analysis-grid">
+<article class="score-card">
+<p class="score-label">PRODUCTIVITY SCORE</p>
+<div class="score-circle">
+<span id="productivity-score">0</span>
+<small>/100</small>
+</div>
+<p id="score-message">
+                        Generate a schedule to view your score.
+                    </p>
+</article>
+<article class="analysis-card workload-card">
+<h3>Workload overview</h3>
+<div class="workload-chart">
+<div class="workload-segment task-segment" id="task-workload-bar"></div>
+<div class="workload-segment break-segment" id="break-workload-bar"></div>
+<div class="workload-segment free-segment" id="free-workload-bar"></div>
+</div>
+<div class="workload-legend">
+<div>
+<span class="legend-dot task-dot"></span>
+<p>
+                Tasks
+                <strong id="task-time-label">0 min</strong>
+</p>
+</div>
+<div>
+<span class="legend-dot break-dot"></span>
+<p>
+                Breaks
+                <strong id="break-time-label">0 min</strong>
+</p>
+</div>
+<div>
+<span class="legend-dot free-dot"></span>
+<p>
+                Free time
+                <strong id="free-time-label">0 min</strong>
+</p>
+</div>
+</div>
+</article>
+<section class="focus-dashboard">
+<div class="focus-header">
+<div>
+<p class="section-label">AI FOCUS PREDICTION</p>
+<h2>Today's Brain Performance</h2>
+</div>
+<div class="focus-score-circle">
+<span id="focus-score-value">--</span>
+<small>Focus</small>
+</div>
+</div>
+<div class="focus-grid">
+<div class="focus-card">
+<h3>Mental Load</h3>
+<div class="focus-bar">
+<div class="focus-fill" id="mental-load-bar"></div>
+</div>
+<span id="mental-load-label">
+                --
+            </span>
+</div>
+<div class="focus-card">
+<h3>Physical Load</h3>
+<div class="focus-bar">
+<div class="focus-fill" id="physical-load-bar"></div>
+</div>
+<span id="physical-load-label">
+                --
+            </span>
+</div>
+<div class="focus-card">
+<h3>Recovery</h3>
+<div class="focus-bar">
+<div class="focus-fill" id="recovery-bar"></div>
+</div>
+<span id="recovery-label">
+                --
+            </span>
+</div>
+</div>
+<div class="focus-insights">
+<div class="focus-insight-card">
+<h4>Peak Focus</h4>
+<p id="peak-focus-time">
+                --
+            </p>
+</div>
+<div class="focus-insight-card">
+<h4>Fatigue Expected</h4>
+<p id="fatigue-time">
+                --
+            </p>
+</div>
+<div class="focus-insight-card">
+<h4>Recovery Suggestion</h4>
+<p id="recovery-tip">
+                --
+            </p>
+</div>
+</div>
+</section>
+<article class="analysis-card timeline-card">
+<h3>Visual timeline</h3>
+<div class="visual-timeline" id="visual-timeline"></div>
+</article>
+<article class="analysis-card">
+<h3>Why this schedule works</h3>
+<ul id="analysis-list"></ul>
+</article>
+<article class="analysis-card">
+<h3>Recommendations</h3>
+<ul id="recommendation-list"></ul>
+</article>
+</div>
+</section>
+<section class="assistant-section">
+<div class="assistant-container">
+<div class="assistant-heading">
+<p class="section-label">ASK LIFELENS</p>
+<h2>Your personal planning assistant</h2>
+<p>
+                Ask questions about your generated schedule and receive
+                personalized guidance.
+            </p>
+</div>
+<div class="assistant-box">
+<div aria-live="polite" class="assistant-messages" id="assistant-messages">
+<div class="assistant-message ai-message">
+<strong>LifeLens AI</strong>
+<p>
+                        Generate a schedule, then ask me about your priorities,
+                        workload, deadlines, or breaks.
+                    </p>
+</div>
+</div>
+<form class="assistant-form" id="assistant-form">
+<label class="sr-only" for="assistant-input">
+                    Ask LifeLens a question
+                </label>
+<input autocomplete="off" id="assistant-input" maxlength="250" placeholder="Example: What should I do first?" type="text"/>
+<button type="submit">
+                    Send
+                </button>
+</form>
+<div class="assistant-suggestions">
+<button type="button">
+                    What should I do first?
+                </button>
+<button type="button">
+                    Is my schedule too heavy?
+                </button>
+<button type="button">
+                    Am I missing any deadlines?
+                </button>
+<button type="button">
+                    Explain my level, XP, and closest badge.
+                </button>
+<button type="button">
+                    Suggest a schedule draft using my real task times.
+                </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<script src="js/main.js?v=chat-history-1" type="module"></script>
+<script defer="" src="js/pwa.js"></script></body>
+</html>

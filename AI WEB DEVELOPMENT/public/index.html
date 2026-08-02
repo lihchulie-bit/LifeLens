@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#2563eb" name="theme-color"/>
+<meta content="LifeLens AI is an intelligent productivity and study platform with smart scheduling, personalized coaching, analytics, achievements, and cloud sync." name="description"/>
+<script>
+        (() => {
+            const savedTheme = localStorage.getItem("lifelens-theme");
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const useDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+            document.documentElement.classList.toggle("dark-mode", useDark);
+            document.documentElement.dataset.theme = useDark ? "dark" : "light";
+        })();
+    </script>
+<title>LifeLens AI | Study Smarter</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="landing.css" rel="stylesheet"/>
+<link href="manifest.json" rel="manifest"/>
+<link href="assets/icon-192.png" rel="apple-touch-icon"/>
+<link href="pwa-ui.css" rel="stylesheet"/></head>
+<body class="landing-page">
+<header class="landing-header">
+<nav aria-label="Main navigation" class="navbar landing-navbar">
+<a aria-label="LifeLens AI home" class="logo" href="#home">
+<img alt="" class="logo-img" src="assets/logo.png"/>
+<span class="logo-text"><span class="logo-blue">LifeLens</span> AI</span>
+</a>
+<ul class="nav-links">
+<li><a href="#home">Home</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#how-it-works">How It Works</a></li>
+<li><a href="#preview">Preview</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+</ul>
+<div class="landing-nav-actions">
+<a class="nav-ai-link" href="planner.html#ai-assistant">🤖 AI Coach</a>
+<a class="landing-login-link" href="login.html">Log in</a>
+<a class="btn-start" href="planner.html">Start Planning</a>
+<button aria-label="Switch to dark mode" aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">🌙</button>
+<button class="install-app-button" hidden="" id="install-app-button" type="button">Install LifeLens</button>
+<button aria-expanded="false" aria-label="Open navigation menu" class="hamburger" type="button">☰</button>
+</div>
+</nav>
+</header>
+<main>
+<section class="landing-hero" id="home">
+<div aria-hidden="true" class="landing-orb landing-orb-one"></div>
+<div aria-hidden="true" class="landing-orb landing-orb-two"></div>
+<div class="landing-container landing-hero-grid">
+<div class="landing-hero-copy reveal-on-scroll">
+<div class="landing-eyebrow"><span></span> AI-powered student productivity</div>
+<h1>Study smarter.<br/><span>Stay consistent.</span><br/>Achieve more.</h1>
+<p>LifeLens brings intelligent scheduling, personalized AI coaching, productivity analytics, and motivating achievements into one focused workspace.</p>
+<div class="landing-hero-actions">
+<a class="landing-primary-button" href="planner.html">Start planning <span>→</span></a>
+<a class="landing-secondary-button" href="planner.html#ai-assistant">Try AI Coach</a>
+</div>
+<div aria-label="Product highlights" class="landing-trust-row">
+<span>✓ Firebase cloud sync</span>
+<span>✓ Installable PWA</span>
+<span>✓ Personalized insights</span>
+</div>
+</div>
+<div aria-label="LifeLens product preview" class="landing-product-stage reveal-on-scroll">
+<div class="landing-preview-window landing-preview-main">
+<div class="landing-preview-topbar">
+<span class="landing-window-dots"><i></i><i></i><i></i></span>
+<strong>Today’s intelligent plan</strong>
+<span class="landing-live-pill">AI ready</span>
+</div>
+<div class="landing-preview-summary">
+<div><span>Productivity</span><strong>92</strong><small>/100</small></div>
+<div><span>Current streak</span><strong>6</strong><small>days</small></div>
+<div><span>Tasks complete</span><strong>5</strong><small>/6</small></div>
+</div>
+<div class="landing-preview-timeline">
+<article><time>09:00</time><div><strong>Mathematics revision</strong><span>90 min · High priority</span></div><em>Done</em></article>
+<article><time>10:30</time><div><strong>Recovery break</strong><span>15 min</span></div><em class="break">Break</em></article>
+<article><time>10:45</time><div><strong>Physics practice</strong><span>75 min · AI adjusted</span></div><em>Next</em></article>
+</div>
+</div>
+<div class="landing-floating-card landing-floating-ai">
+<span>🤖</span>
+<div><strong>LifeLens Coach</strong><p>Physics usually takes 18 minutes longer. I adjusted your estimate.</p></div>
+</div>
+<div class="landing-floating-card landing-floating-xp">
+<span>🏆</span>
+<div><strong>+10 XP</strong><p>One task closer to Explorer</p></div>
+</div>
+</div>
+</div>
+</section>
+<section aria-label="LifeLens product statistics" class="landing-stats">
+<div class="landing-container landing-stats-grid">
+<article><strong data-counter="27" data-suffix="+">0</strong><span>Achievements</span></article>
+<article><strong data-counter="6" data-suffix="+">0</strong><span>Core systems</span></article>
+<article><strong data-counter="100" data-suffix="%">0</strong><span>Cloud-ready</span></article>
+<article><strong data-counter="24" data-suffix="/7">0</strong><span>AI assistance</span></article>
+</div>
+</section>
+<section class="landing-section" id="features">
+<div class="landing-container">
+<div class="landing-section-heading reveal-on-scroll">
+<p>EVERYTHING WORKS TOGETHER</p>
+<h2>One focused system for better study habits.</h2>
+<span>Every feature is built around student productivity—not unrelated tools you will never use.</span>
+</div>
+<div class="landing-feature-grid">
+<article class="landing-feature-card reveal-on-scroll">
+<div class="landing-feature-icon">📅</div>
+<h3>Smart Planner</h3>
+<p>Turn tasks, priorities, deadlines, and available time into a realistic schedule with intelligent breaks.</p>
+<a href="planner.html">Explore planner <span>→</span></a>
+</article>
+<article class="landing-feature-card reveal-on-scroll">
+<div class="landing-feature-icon">🤖</div>
+<h3>AI Coach</h3>
+<p>Receive personalized guidance based on your planner, actual timing, dashboard trends, XP, and badges.</p>
+<a href="planner.html#ai-assistant">Open AI Coach <span>→</span></a>
+</article>
+<article class="landing-feature-card reveal-on-scroll">
+<div class="landing-feature-icon">📊</div>
+<h3>Productivity Dashboard</h3>
+<p>Understand weekly activity, study distribution, planning accuracy, heatmaps, and peak productivity.</p>
+<a href="dashboard.html">View dashboard <span>→</span></a>
+</article>
+<article class="landing-feature-card reveal-on-scroll">
+<div class="landing-feature-icon">🏆</div>
+<h3>Achievements</h3>
+<p>Build streaks, gain XP, advance through ranks, and unlock 27 meaningful productivity achievements.</p>
+<a href="dashboard.html#achievements-section">View achievements <span>→</span></a>
+</article>
+<article class="landing-feature-card reveal-on-scroll">
+<div class="landing-feature-icon">☁️</div>
+<h3>Cloud Sync</h3>
+<p>Firebase Authentication and Firestore keep your planner and progress connected to your account.</p>
+<a href="login.html">Create account <span>→</span></a>
+</article>
+<article class="landing-feature-card reveal-on-scroll">
+<div class="landing-feature-icon">📱</div>
+<h3>Offline-ready PWA</h3>
+<p>Install LifeLens like an app, open it quickly, and keep essential features available when offline.</p>
+<button data-install-trigger="" type="button">Install LifeLens <span>→</span></button>
+</article>
+</div>
+</div>
+</section>
+<section class="landing-section landing-workflow-section" id="how-it-works">
+<div class="landing-container">
+<div class="landing-section-heading reveal-on-scroll">
+<p>A SIMPLE PRODUCTIVITY LOOP</p>
+<h2>Plan, complete, learn, improve.</h2>
+</div>
+<div class="landing-workflow">
+<article class="reveal-on-scroll"><span>01</span><div class="landing-workflow-icon">✍️</div><h3>Add your tasks</h3><p>Enter tasks manually or describe your day in one sentence using Smart Task Input.</p></article>
+<article class="reveal-on-scroll"><span>02</span><div class="landing-workflow-icon">✨</div><h3>Generate a schedule</h3><p>LifeLens balances priorities, available time, deadlines, and recovery breaks.</p></article>
+<article class="reveal-on-scroll"><span>03</span><div class="landing-workflow-icon">✅</div><h3>Track real progress</h3><p>Complete tasks, record actual time, build your streak, and earn XP.</p></article>
+<article class="reveal-on-scroll"><span>04</span><div class="landing-workflow-icon">🧠</div><h3>Improve with AI</h3><p>The AI Coach turns your history into practical recommendations for the next day.</p></article>
+</div>
+</div>
+</section>
+<section class="landing-section" id="preview">
+<div class="landing-container">
+<div class="landing-section-heading reveal-on-scroll">
+<p>SEE LIFELENS IN ACTION</p>
+<h2>A complete productivity workspace.</h2>
+</div>
+<div class="landing-demo-shell reveal-on-scroll">
+<div aria-label="Product preview tabs" class="landing-demo-tabs" role="tablist">
+<button aria-selected="true" data-preview-tab="planner" role="tab" type="button">Smart Planner</button>
+<button aria-selected="false" data-preview-tab="dashboard" role="tab" type="button">Dashboard</button>
+<button aria-selected="false" data-preview-tab="coach" role="tab" type="button">AI Coach</button>
+<button aria-selected="false" data-preview-tab="achievements" role="tab" type="button">Achievements</button>
+</div>
+<div class="landing-demo-panel active" data-preview-panel="planner">
+<div class="landing-demo-copy"><span>SMART PLANNER</span><h3>Build a realistic day in seconds.</h3><p>Flexible durations, intelligent breaks, deadline awareness, learned time estimates, and a clear visual timeline.</p><a href="planner.html">Open planner →</a></div>
+<div class="landing-demo-visual landing-mini-planner"><div class="mini-heading"><strong>Today’s plan</strong><span>All changes saved</span></div><div class="mini-task"><time>08:30</time><p><strong>Biology revision</strong><span>60 minutes</span></p><em>High</em></div><div class="mini-task"><time>09:30</time><p><strong>Short break</strong><span>10 minutes</span></p><em>Break</em></div><div class="mini-task"><time>09:40</time><p><strong>SAT practice</strong><span>75 minutes</span></p><em>Medium</em></div></div>
+</div>
+<div class="landing-demo-panel" data-preview-panel="dashboard" hidden="">
+<div class="landing-demo-copy"><span>PRODUCTIVITY ANALYTICS</span><h3>See patterns, not just numbers.</h3><p>Review completion trends, planning accuracy, study distribution, peak hours, levels, and achievement progress.</p><a href="dashboard.html">View dashboard →</a></div>
+<div class="landing-demo-visual landing-mini-dashboard"><div class="mini-score"><span>Productivity score</span><strong>92</strong><small>/100</small></div><div class="mini-bars"><i style="height:38%"></i><i style="height:54%"></i><i style="height:46%"></i><i style="height:72%"></i><i style="height:65%"></i><i style="height:92%"></i><i style="height:58%"></i></div><div class="mini-insight">You are most productive between 9 AM and 11 AM.</div></div>
+</div>
+<div class="landing-demo-panel" data-preview-panel="coach" hidden="">
+<div class="landing-demo-copy"><span>PERSONALIZED AI COACH</span><h3>Advice grounded in your real progress.</h3><p>Ask about your schedule, deadlines, workload, XP, badges, or study timing. Suggested plans remain reviewable before entering the planner.</p><a href="planner.html#ai-assistant">Try AI Coach →</a></div>
+<div class="landing-demo-visual landing-mini-chat"><div class="mini-ai-message"><b>LifeLens Coach</b><p>You completed all three planned tasks with 99% timing accuracy. Keep similar durations tomorrow and begin Physics before your evening focus declines.</p></div><div class="mini-user-message">How should I plan tomorrow?</div></div>
+</div>
+<div class="landing-demo-panel" data-preview-panel="achievements" hidden="">
+<div class="landing-demo-copy"><span>GAMIFICATION</span><h3>Make consistency visible.</h3><p>Progress through Starter to Legend while unlocking task, streak, planning, study-habit, XP, and AI achievements.</p><a href="dashboard.html#achievements-section">See achievements →</a></div>
+<div class="landing-demo-visual landing-mini-badges"><article><span>🏆</span><strong>XP Century</strong><small>70 / 100 XP</small><i><b style="width:70%"></b></i></article><article><span>🔥</span><strong>Week Warrior</strong><small>6 / 7 days</small><i><b style="width:86%"></b></i></article><article><span>🎯</span><strong>Accuracy Expert</strong><small>Unlocked</small><i><b style="width:100%"></b></i></article></div>
+</div>
+</div>
+</div>
+</section>
+<section class="landing-section landing-ai-section">
+<div class="landing-container landing-ai-grid">
+<div class="landing-ai-copy reveal-on-scroll">
+<p>PERSONALIZED, NOT GENERIC</p>
+<h2>An AI coach that understands your progress.</h2>
+<span>LifeLens can use your current plan, actual task durations, completion history, dashboard data, XP, rank, streak, and achievements to provide grounded guidance.</span>
+<ul><li>Daily productivity briefings</li><li>Planned-vs-actual duration advice</li><li>Badge and level progress explanations</li><li>Reviewable schedule suggestions</li></ul>
+<a class="landing-primary-button" href="planner.html#ai-assistant">Talk to LifeLens Coach <span>→</span></a>
+</div>
+<div class="landing-ai-conversation reveal-on-scroll">
+<div class="landing-conversation-header"><span>🤖</span><div><strong>LifeLens Coach</strong><small>Personalized memory active</small></div></div>
+<div class="landing-conversation-user">How can I improve tomorrow’s study plan?</div>
+<div class="landing-conversation-ai"><strong>LifeLens Coach</strong><p>Your planning accuracy today was strong. Physics has recently taken longer than expected, so schedule it before lunch and allow about 90 minutes. Keep one short break before SAT practice.</p><div><span>Planner</span><span>Dashboard</span><span>Actual timing</span></div></div>
+</div>
+</div>
+</section>
+<section class="landing-section" id="faq">
+<div class="landing-container landing-faq-grid">
+<div class="landing-section-heading landing-faq-heading reveal-on-scroll"><p>FREQUENTLY ASKED</p><h2>Questions about LifeLens.</h2><span>Everything you need to understand the platform before creating your first plan.</span></div>
+<div class="landing-faq-list reveal-on-scroll">
+<article class="landing-faq-item"><button aria-expanded="false" type="button">Can LifeLens generate my schedule automatically?<span>+</span></button><div hidden=""><p>Yes. The planner generates schedules from your tasks, availability, priorities, deadlines, and break preferences. AI-generated schedule suggestions are shown for review before being placed into the planner.</p></div></article>
+<article class="landing-faq-item"><button aria-expanded="false" type="button">Does my data sync across devices?<span>+</span></button><div hidden=""><p>Firebase Authentication and Firestore support account-based cloud saving for connected LifeLens data. Local storage also acts as a browser cache for supported features.</p></div></article>
+<article class="landing-faq-item"><button aria-expanded="false" type="button">Can I install LifeLens as an app?<span>+</span></button><div hidden=""><p>Yes. LifeLens is a Progressive Web App and can be installed from a supported browser when the install option becomes available.</p></div></article>
+<article class="landing-faq-item"><button aria-expanded="false" type="button">What does the AI Coach know about me?<span>+</span></button><div hidden=""><p>It can use the productivity data available inside LifeLens, including your planner, completion records, actual task timing, XP, rank, streak, and achievement progress. It should not invent missing information.</p></div></article>
+<article class="landing-faq-item"><button aria-expanded="false" type="button">Is LifeLens only a study planner?<span>+</span></button><div hidden=""><p>LifeLens is a focused student-productivity platform. The planner is its foundation, while the dashboard, AI Coach, cloud sync, and gamification systems help users improve over time.</p></div></article>
+</div>
+</div>
+</section>
+<section class="landing-final-cta">
+<div class="landing-container reveal-on-scroll">
+<p>YOUR NEXT PRODUCTIVE DAY STARTS HERE</p>
+<h2>Ready to study smarter?</h2>
+<span>Create your tasks, generate a realistic plan, and let LifeLens help you improve every day.</span>
+<div><a class="landing-primary-button" href="planner.html">Start planning <span>→</span></a><a class="landing-secondary-button" href="login.html">Create account</a></div>
+</div>
+</section>
+</main>
+<footer class="landing-footer">
+<div class="landing-container landing-footer-grid">
+<div class="landing-footer-brand"><a class="logo" href="#home"><img alt="" class="logo-img" src="assets/logo.png"/><span class="logo-text"><span class="logo-blue">LifeLens</span> AI</span></a><p>An AI-powered productivity and study platform designed to help students plan effectively, understand their habits, and stay motivated.</p></div>
+<div><h3>Product</h3><a href="planner.html">Smart Planner</a><a href="planner.html#ai-assistant">AI Coach</a><a href="dashboard.html">Dashboard</a><a href="dashboard.html#achievements-section">Achievements</a></div>
+<div><h3>Explore</h3><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="#preview">Product preview</a><a href="#faq">FAQ</a></div>
+<div><h3>Account</h3><a href="login.html">Log in</a><a href="login.html#signup">Create account</a><button data-install-trigger="" type="button">Install LifeLens</button></div>
+</div>
+<div class="landing-container landing-footer-bottom"><p>© <span id="current-year"></span> Bryan Jervis. Built for the AI for Daily Life competition.</p><span>Focused on student productivity.</span></div>
+</footer>
+<script src="js/main.js" type="module"></script>
+<script src="js/landing.js" type="module"></script>
+<script defer="" src="js/pwa.js"></script></body>
+</html>

@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <title>Account access | LifeLens AI</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="pwa-ui.css" rel="stylesheet">
+</head>
+<body class="auth-page">
+    <main class="auth-shell">
+        <a class="auth-brand" href="index.html" aria-label="LifeLens home">
+            <span class="auth-brand-icon">◉</span>
+            <span><strong>LifeLens</strong> AI</span>
+        </a>
+
+        <section class="auth-card" aria-labelledby="auth-title">
+            <div class="auth-card-intro">
+                <p class="section-label">WELCOME TO LIFELENS</p>
+                <h1 id="auth-title">Your LifeLens account, securely synced.</h1>
+                <p id="auth-description">Sign in with Firebase Authentication to open your planner, dashboard, saved chats, XP, levels, and study history.</p>
+            </div>
+
+            <div class="auth-tabs" role="tablist" aria-label="Account options">
+                <button type="button" data-auth-tab="login" role="tab">Log in</button>
+                <button type="button" data-auth-tab="signup" role="tab">Sign up</button>
+            </div>
+
+            <p id="auth-message" class="auth-message" aria-live="polite"></p>
+
+            <form id="login-form" data-auth-panel="login" class="auth-form" novalidate>
+                <label>Email
+                    <input name="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@example.com">
+                </label>
+                <label>Password
+                    <input name="password" type="password" autocomplete="current-password" required placeholder="Your password">
+                </label>
+                <button type="submit" class="auth-submit">Log in</button>
+                <button type="button" id="forgot-password-button" class="auth-forgot-button">Forgot password?</button>
+            </form>
+
+            <form id="signup-form" data-auth-panel="signup" class="auth-form" hidden novalidate>
+                <label>Name
+                    <input name="name" type="text" autocomplete="name" required maxlength="60" placeholder="Your name">
+                </label>
+                <label>Email
+                    <input name="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@example.com">
+                </label>
+                <label>Password
+                    <input name="password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters">
+                </label>
+                <label>Confirm password
+                    <input name="confirmPassword" type="password" autocomplete="new-password" required minlength="8" placeholder="Repeat your password">
+                </label>
+                <button type="submit" class="auth-submit">Create account</button>
+            </form>
+
+            <form id="reset-form" data-auth-panel="reset" class="auth-form auth-reset-form" hidden novalidate>
+                <div class="auth-reset-heading">
+                    <span class="auth-reset-icon" aria-hidden="true">✉</span>
+                    <div>
+                        <h2>Reset your password</h2>
+                        <p>Enter the email used for your LifeLens account. Firebase will email you a secure reset link.</p>
+                    </div>
+                </div>
+                <label>Email
+                    <input name="email" type="email" autocomplete="email" inputmode="email" required placeholder="you@example.com">
+                </label>
+                <button type="submit" class="auth-submit" id="reset-submit-button">Send reset email</button>
+                <button type="button" id="back-to-login-button" class="auth-secondary-button">← Back to log in</button>
+                <p class="auth-reset-help">Check your spam or junk folder if the email does not arrive within a few minutes.</p>
+            </form>
+
+            <p class="auth-local-note">Your account is handled by Firebase Authentication. LifeLens never stores your password.</p>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initializeAuth } from "./js/auth.js";
+        initializeAuth();
+    </script>
+    <script defer src="js/pwa.js"></script>
+</body>
+</html>
