@@ -291,9 +291,8 @@ async function getModelCandidates() {
 
     const healthy = candidates.filter((model) => !isModelCoolingDown(model));
 
-    // If every candidate is cooling down, allow one controlled retry rather
-    // than leaving the AI unavailable until the cooldown expires.
-    return (healthy.length > 0 ? healthy : candidates).slice(0, 8);
+// OpenRouter allows at most 3 models in the fallback list.
+return (healthy.length > 0 ? healthy : candidates).slice(0, 3);
 }
 
 function parseRetryAfter(response) {
@@ -343,7 +342,7 @@ async function createCoachCompletion({
         : "";
 
     const body = {
-        models,
+         models: models.slice(0, 3),
         messages: [
             {
                 role: "system",
