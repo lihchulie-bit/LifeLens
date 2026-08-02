@@ -20,7 +20,9 @@ import {
 
 const PROTECTED_PAGES = new Set([
     "planner.html",
-    "dashboard.html"
+    "dashboard.html",
+    "insights.html",
+    "assistant.html"
 ]);
 
 let authReadyPromise = null;
@@ -499,6 +501,11 @@ export async function initializeAuth() {
     initializeAuthPage();
 
     const user = await waitForAuthReady();
+
+    if (user?.uid) {
+        localStorage.setItem("lifelens-last-auth-uid-v1", user.uid);
+    }
+
     const page = currentPageName();
 
     const authMode = new URLSearchParams(window.location.search).get("mode");
@@ -521,6 +528,12 @@ export async function initializeAuth() {
     renderAuthNavigation(user);
 
     onAuthStateChanged(auth, (nextUser) => {
+        if (nextUser?.uid) {
+            localStorage.setItem("lifelens-last-auth-uid-v1", nextUser.uid);
+        } else {
+            localStorage.removeItem("lifelens-last-auth-uid-v1");
+        }
+
         renderAuthNavigation(nextUser);
 
         if (PROTECTED_PAGES.has(currentPageName()) && !nextUser) {

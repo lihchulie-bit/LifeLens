@@ -1,10 +1,12 @@
 "use strict";
 
+import { accountStorage } from "./account-storage.js";
+
 const STORAGE_KEY = "lifelens-planner-data";
 
 export function savePlannerData(data) {
     try {
-        localStorage.setItem(
+        accountStorage.setItem(
             STORAGE_KEY,
             JSON.stringify(data)
         );
@@ -23,7 +25,7 @@ export function savePlannerData(data) {
 export function loadPlannerData() {
     try {
         const savedData =
-            localStorage.getItem(STORAGE_KEY);
+            accountStorage.getItem(STORAGE_KEY);
 
         if (!savedData) {
             return null;
@@ -51,7 +53,7 @@ export function loadPlannerData() {
 
 export function clearPlannerData() {
     try {
-        localStorage.removeItem(STORAGE_KEY);
+        accountStorage.removeItem(STORAGE_KEY);
 
         return true;
     } catch (error) {

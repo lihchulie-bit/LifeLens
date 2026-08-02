@@ -1,12 +1,14 @@
 "use strict";
 
+import { accountStorage } from "./account-storage.js";
+
 const LEARNING_STORAGE_KEY =
     "lifelens-task-learning-history";
 
 function loadHistory() {
     try {
         const storedHistory =
-            localStorage.getItem(
+            accountStorage.getItem(
                 LEARNING_STORAGE_KEY
             );
 
@@ -32,7 +34,7 @@ function loadHistory() {
 
 function saveHistory(history) {
     try {
-        localStorage.setItem(
+        accountStorage.setItem(
             LEARNING_STORAGE_KEY,
             JSON.stringify(history)
         );
@@ -182,7 +184,7 @@ export function getDurationSuggestion(
 }
 
 export function clearLearningHistory() {
-    localStorage.removeItem(
+    accountStorage.removeItem(
         LEARNING_STORAGE_KEY
     );
 }

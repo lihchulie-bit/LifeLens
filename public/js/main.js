@@ -660,8 +660,8 @@ function initializeInstallPrompt() {
         }
     );
 }
-document.addEventListener("DOMContentLoaded", () => {
-    initializeAuth();
+document.addEventListener("DOMContentLoaded", async () => {
+    await initializeAuth();
     initializeLiveClock();
     initializeNavigation();
     initializeCurrentYear();

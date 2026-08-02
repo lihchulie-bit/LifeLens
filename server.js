@@ -40,7 +40,31 @@ step-by-step analysis about how you interpreted the data.
 
 Return only a polished final answer for the user. Do not include hidden
 reasoning, scratch work, chain-of-thought, internal analysis, or metadata.
-Use natural language and readable Markdown. Prefer concise answers.
+
+Use natural language and clean, readable Markdown. Prefer concise answers.
+
+Formatting rules:
+- Write complete sentences and natural paragraphs.
+- Keep bold values inside the sentence that refers to them.
+- Never place commas, periods, colons, or other punctuation on separate lines.
+- Do not put blank lines before or after a bold word unless starting a new paragraph.
+- Do not split one sentence into several paragraphs.
+- Prefer short paragraphs over fragments.
+- Use bullet points only when they genuinely improve readability.
+
+Good example:
+"You are currently at **Level 1 (Starter)** with **0 XP**. To reach **Explorer**, you need **100 more XP**."
+
+Bad example:
+"You are currently at
+
+**Level 1 (Starter)**
+
+with
+
+**0 XP**
+
+, and..."
 
 You can:
 - explain the user's daily schedule;
@@ -91,7 +115,36 @@ ${privateContext}
 </private_lifelens_context>
     `.trim();
 }
+function normalizeMarkdownSpacing(value) {
+    return String(value || "")
+        // Remove line breaks before punctuation.
+        .replace(/\s*\n+\s*([,.;:!?])/g, "$1")
 
+        // Join sentence fragments around bold values.
+        .replace(
+            /([^\n.!?])\n{2,}\s*(\*\*[^*\n]+\*\*)\n{2,}\s*([a-z])/g,
+            "$1 $2 $3"
+        )
+
+        // Join text followed by a bold value when it is still one sentence.
+        .replace(
+            /([^\n.!?:])\n{2,}\s*(\*\*[^*\n]+\*\*)/g,
+            "$1 $2"
+        )
+
+        // Join a bold value followed by a comma or continuation phrase.
+        .replace(
+            /(\*\*[^*\n]+\*\*)\n{2,}\s*(,?\s*(?:which|with|and|you|to|so|but)\b)/gi,
+            "$1 $2"
+        )
+
+        // Remove spaces before punctuation.
+        .replace(/\s+([,.;:!?])/g, "$1")
+
+        // Keep normal paragraph spacing.
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
+}
 function removeProviderMetadata(value) {
     return String(value || "")
         .replace(/(?:^|\n)\s*User\s+Safety\s*:\s*(?:safe|unsafe)\s*/gi, "\n")
@@ -118,7 +171,9 @@ function parseStructuredReply(content) {
     }
 
     const finalMarker = raw.match(/(?:FINAL ANSWER|FINAL RESPONSE)\s*:\s*([\s\S]*)/i);
-    return removeProviderMetadata(finalMarker ? finalMarker[1] : raw);
+    return normalizeMarkdownSpacing(
+    removeProviderMetadata(parsed.reply)
+);
 }
 
 function looksLikeInternalLeak(reply) {
@@ -520,7 +575,155 @@ async function requestWithModelFallback({
     finalError.status = Number(lastError?.status || 503);
     throw finalError;
 }
+function isPlannerDraftRequest(message) {
+    const text = String(message || "").toLowerCase();
 
+    const hasAction =
+        /\b(create|generate|make|build|suggest|plan|organize)\b/.test(
+            text
+        );
+
+    const hasPlannerTerm =
+        /\b(schedule|study plan|planner|timetable|routine|task list)\b/.test(
+            text
+        );
+
+    return hasAction && hasPlannerTerm;
+}
+function hasPlannerDraft(reply) {
+    return /```lifelens-plan\s*[\s\S]*?```/i.test(
+        String(reply || "")
+    );
+}
+
+function extractRequestedTaskCount(message) {
+    const match = String(message || "").match(
+        /\b([1-9]|10)\s+tasks?\b/i
+    );
+
+    return match ? Number(match[1]) : 3;
+}
+
+function buildGuaranteedPlannerDraft(message, context) {
+    const requestedCount = extractRequestedTaskCount(message);
+
+    const savedTasks =
+        Array.isArray(context?.planner?.tasks)
+            ? context.planner.tasks
+            : Array.isArray(context?.savedPlanner?.tasks)
+                ? context.savedPlanner.tasks
+                : [];
+
+    const subjectNames = [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "Biology",
+        "English",
+        "Coding",
+        "Revision",
+        "Practice questions",
+        "Assignment",
+        "Review"
+    ];
+
+    const mentionedSubjects = subjectNames.filter((subject) =>
+        new RegExp(`\\b${subject}\\b`, "i").test(message)
+    );
+
+    const sourceTasks = [
+        ...savedTasks.map((task) => ({
+            name: String(
+                task?.name ||
+                task?.title ||
+                "Study task"
+            ).trim(),
+            duration: Number(task?.duration) || 45,
+            priority: ["high", "medium", "low"].includes(
+                String(task?.priority || "").toLowerCase()
+            )
+                ? String(task.priority).toLowerCase()
+                : "medium",
+            deadline: /^\d{2}:\d{2}$/.test(
+                String(task?.deadline || "")
+            )
+                ? String(task.deadline)
+                : ""
+        })),
+        ...mentionedSubjects.map((name) => ({
+            name,
+            duration: 45,
+            priority: "medium",
+            deadline: ""
+        }))
+    ];
+
+    const uniqueTasks = [];
+    const usedNames = new Set();
+
+    for (const task of sourceTasks) {
+        const key = task.name.toLowerCase();
+
+        if (!usedNames.has(key)) {
+            usedNames.add(key);
+            uniqueTasks.push(task);
+        }
+    }
+
+    const fallbackNames = [
+        "Mathematics revision",
+        "Physics practice",
+        "English review",
+        "Assignment work",
+        "Practice questions"
+    ];
+
+    while (uniqueTasks.length < requestedCount) {
+        const index = uniqueTasks.length;
+
+        uniqueTasks.push({
+            name:
+                fallbackNames[index] ||
+                `Study task ${index + 1}`,
+            duration: 45,
+            priority:
+                index === 0
+                    ? "high"
+                    : "medium",
+            deadline: ""
+        });
+    }
+
+    const tasks = uniqueTasks
+        .slice(0, requestedCount)
+        .map((task, index) => ({
+            name: task.name,
+            duration: Math.min(
+                720,
+                Math.max(
+                    5,
+                    Math.round(
+                        Number(task.duration || 45) / 5
+                    ) * 5
+                )
+            ),
+            priority:
+                index === 0 && task.priority === "medium"
+                    ? "high"
+                    : task.priority,
+            deadline: task.deadline,
+            recurrence: "once",
+            recurrenceDays: []
+        }));
+
+    return {
+        startTime: "09:00",
+        endTime: "17:00",
+        breaksEnabled: true,
+        breakDuration: 10,
+        tasks
+    };
+}
 app.post("/api/chat", async (req, res) => {
     try {
         if (!process.env.OPENROUTER_API_KEY) {
@@ -599,6 +802,9 @@ const history =
         let completion = result.completion;
         let usedModel = result.model;
         let choice = completion.choices?.[0];
+        console.log("========== RAW AI ==========");
+console.log(choice?.message?.content);
+console.log("============================");
         let reply = parseStructuredReply(choice?.message?.content);
 
         if (
@@ -632,13 +838,30 @@ const history =
         }
 
         if (isProbablyTruncated(reply, choice?.finish_reason)) {
-            reply += "\n\nPlease ask me to continue if you need more detail.";
-        }
+    reply +=
+        "\n\nPlease ask me to continue if you need more detail.";
+}
 
-        res.json({
-            reply,
-            model: usedModel || completion.model || "OpenRouter free model"
-        });
+if (
+    isPlannerDraftRequest(message) &&
+    !hasPlannerDraft(reply)
+) {
+    const plannerDraft =
+        buildGuaranteedPlannerDraft(message, context);
+
+    reply +=
+        "\n\n```lifelens-plan\n" +
+        JSON.stringify(plannerDraft, null, 2) +
+        "\n```";
+}
+
+res.json({
+    reply,
+    model:
+        usedModel ||
+        completion.model ||
+        "OpenRouter free model"
+});
     } catch (error) {
         console.error("OpenRouter request failed:", error);
 

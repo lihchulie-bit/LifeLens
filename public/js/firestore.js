@@ -1,5 +1,7 @@
 "use strict";
 
+import { accountStorage } from "./account-storage.js";
+
 import { auth, db } from "./firebase.js";
 import {
     deleteField,
@@ -74,13 +76,13 @@ export async function savePlannerToCloud(plannerData) {
         { merge: true }
     );
 
-    localStorage.removeItem(PENDING_PLANNER_KEY);
+    accountStorage.removeItem(PENDING_PLANNER_KEY);
     return serializablePlanner;
 }
 
 export function queuePlannerForCloud(plannerData) {
     try {
-        localStorage.setItem(
+        accountStorage.setItem(
             PENDING_PLANNER_KEY,
             JSON.stringify(plannerData)
         );
@@ -93,7 +95,7 @@ export function queuePlannerForCloud(plannerData) {
 
 export function getQueuedPlanner() {
     try {
-        const raw = localStorage.getItem(PENDING_PLANNER_KEY);
+        const raw = accountStorage.getItem(PENDING_PLANNER_KEY);
         return raw ? JSON.parse(raw) : null;
     } catch (error) {
         console.error("Could not read pending planner sync:", error);
@@ -127,6 +129,6 @@ export async function clearPlannerFromCloud() {
         { merge: true }
     );
 
-    localStorage.removeItem(PENDING_PLANNER_KEY);
+    accountStorage.removeItem(PENDING_PLANNER_KEY);
     return true;
 }

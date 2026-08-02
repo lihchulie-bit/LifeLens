@@ -1,4 +1,6 @@
 "use strict";
+
+import { accountStorage } from "./account-storage.js";
 import {
     getDurationSuggestion,
     recordTaskResult
@@ -105,7 +107,7 @@ export function initializePlanner() {
         "lifelens-assistant-plan-draft-v1";
 
     let remindersEnabled =
-        localStorage.getItem(REMINDERS_STORAGE_KEY) === "true";
+        accountStorage.getItem(REMINDERS_STORAGE_KEY) === "true";
     let activeReminderTimers = [];
     let overdueCheckTimer = null;
     let lastOverdueSignature = "";
@@ -553,7 +555,7 @@ return taskItem;
         updateBreakSettings();
         updateRemoveButtons();
         saveCurrentPlanner();
-        localStorage.removeItem(ASSISTANT_PLAN_DRAFT_KEY);
+        accountStorage.removeItem(ASSISTANT_PLAN_DRAFT_KEY);
 
         setPlannerMessage(
             "AI schedule suggestion loaded as a draft. Review it, then press Generate Schedule when ready.",
@@ -886,7 +888,7 @@ return taskItem;
 
         if (!savedData) {
             remindersEnabled =
-                localStorage.getItem(REMINDERS_STORAGE_KEY) === "true";
+                accountStorage.getItem(REMINDERS_STORAGE_KEY) === "true";
             updateBreakSettings();
             updateRemoveButtons();
             return false;
@@ -1002,7 +1004,7 @@ return taskItem;
             if (Array.isArray(savedData.completedTaskIds)) {
                 savedData.completedTaskIds.forEach((taskId) => {
                     if (taskId) {
-                        localStorage.setItem(
+                        accountStorage.setItem(
                             getCompletionStorageKey(taskId),
                             "true"
                         );
@@ -1012,7 +1014,7 @@ return taskItem;
 
             remindersEnabled =
                 savedData.remindersEnabled === true ||
-                localStorage.getItem(REMINDERS_STORAGE_KEY) === "true";
+                accountStorage.getItem(REMINDERS_STORAGE_KEY) === "true";
 
             displaySchedule(
                 latestGeneratedSchedule,
@@ -1150,7 +1152,7 @@ return taskItem;
 
         if (!preservePreference) {
             remindersEnabled = false;
-            localStorage.setItem(
+            accountStorage.setItem(
                 REMINDERS_STORAGE_KEY,
                 "false"
             );
@@ -1246,7 +1248,7 @@ return taskItem;
             });
 
         remindersEnabled = true;
-        localStorage.setItem(
+        accountStorage.setItem(
             REMINDERS_STORAGE_KEY,
             "true"
         );
@@ -1280,7 +1282,7 @@ return taskItem;
 
             if (permission !== "granted") {
                 remindersEnabled = false;
-                localStorage.setItem(
+                accountStorage.setItem(
                     REMINDERS_STORAGE_KEY,
                     "false"
                 );
@@ -2523,7 +2525,7 @@ function getCompletionStorageKey(taskId) {
 
 function isTaskCompleted(taskId) {
     return (
-        localStorage.getItem(
+        accountStorage.getItem(
             getCompletionStorageKey(taskId)
         ) === "true"
     );
@@ -2551,7 +2553,7 @@ function getCompletionDateStorageKey(taskId) {
 function loadCompletionHistory() {
     try {
         const parsed = JSON.parse(
-            localStorage.getItem(COMPLETION_HISTORY_STORAGE_KEY) || "[]"
+            accountStorage.getItem(COMPLETION_HISTORY_STORAGE_KEY) || "[]"
         );
 
         return Array.isArray(parsed) ? parsed : [];
@@ -2561,7 +2563,7 @@ function loadCompletionHistory() {
 }
 
 function saveCompletionHistory(history) {
-    localStorage.setItem(
+    accountStorage.setItem(
         COMPLETION_HISTORY_STORAGE_KEY,
         JSON.stringify(history)
     );
@@ -2598,10 +2600,10 @@ function removeLatestCompletionTimestamp(taskId) {
 function incrementPlannerGenerationCount() {
     const currentCount = Math.max(
         0,
-        Number(localStorage.getItem(PLANNER_GENERATION_COUNT_KEY)) || 0
+        Number(accountStorage.getItem(PLANNER_GENERATION_COUNT_KEY)) || 0
     );
 
-    localStorage.setItem(
+    accountStorage.setItem(
         PLANNER_GENERATION_COUNT_KEY,
         String(currentCount + 1)
     );
@@ -2614,7 +2616,7 @@ function incrementPlannerGenerationCount() {
 function loadStreakActivity() {
     try {
         const saved = JSON.parse(
-            localStorage.getItem(
+            accountStorage.getItem(
                 STREAK_ACTIVITY_STORAGE_KEY
             ) || "{}"
         );
@@ -2628,7 +2630,7 @@ function loadStreakActivity() {
 }
 
 function saveStreakActivity(activity) {
-    localStorage.setItem(
+    accountStorage.setItem(
         STREAK_ACTIVITY_STORAGE_KEY,
         JSON.stringify(activity)
     );
@@ -2664,7 +2666,7 @@ function changeStreakActivity(dateKey, amount) {
 
 function getPlannerXP() {
     const storedXP = Number(
-        localStorage.getItem(PLANNER_XP_STORAGE_KEY)
+        accountStorage.getItem(PLANNER_XP_STORAGE_KEY)
     );
 
     return Number.isFinite(storedXP)
@@ -2712,7 +2714,7 @@ function changePlannerXP(amount) {
         getPlannerXP() + amount
     );
 
-    localStorage.setItem(
+    accountStorage.setItem(
         PLANNER_XP_STORAGE_KEY,
         String(nextXP)
     );
@@ -2732,12 +2734,12 @@ function saveTaskCompletion(taskId, completed) {
         getCompletionStorageKey(taskId);
 
     const wasCompleted =
-        localStorage.getItem(storageKey) === "true";
+        accountStorage.getItem(storageKey) === "true";
 
     if (completed) {
-        localStorage.setItem(storageKey, "true");
+        accountStorage.setItem(storageKey, "true");
     } else {
-        localStorage.removeItem(storageKey);
+        accountStorage.removeItem(storageKey);
     }
 
     const completionDateKey =
@@ -2746,7 +2748,7 @@ function saveTaskCompletion(taskId, completed) {
     if (completed && !wasCompleted) {
         const completedOn = getTodayDateKey();
 
-        localStorage.setItem(
+        accountStorage.setItem(
             completionDateKey,
             completedOn
         );
@@ -2756,13 +2758,13 @@ function saveTaskCompletion(taskId, completed) {
         changePlannerXP(10);
     } else if (!completed && wasCompleted) {
         const completedOn =
-            localStorage.getItem(completionDateKey);
+            accountStorage.getItem(completionDateKey);
 
         if (completedOn) {
             changeStreakActivity(completedOn, -1);
         }
 
-        localStorage.removeItem(completionDateKey);
+        accountStorage.removeItem(completionDateKey);
         removeLatestCompletionTimestamp(taskId);
         changePlannerXP(-10);
     }

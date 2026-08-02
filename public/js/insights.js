@@ -1,5 +1,7 @@
 "use strict";
 
+import { accountStorage } from "./account-storage.js";
+
 const KEYS = {
     history: "lifelens-completion-history-v1",
     reviews: "lifelens-daily-reviews",
@@ -10,7 +12,7 @@ const $ = (id) => document.getElementById(id);
 
 function readJSON(key, fallback) {
     try {
-        const value = JSON.parse(localStorage.getItem(key) || "");
+        const value = JSON.parse(accountStorage.getItem(key) || "");
         return value ?? fallback;
     } catch {
         return fallback;
@@ -192,7 +194,7 @@ function build() {
     const reviews = readJSON(KEYS.reviews, {});
     const current = getWeekRecords(history, 0);
     const previous = getWeekRecords(history, 1);
-    const xp = Math.max(0, Number(localStorage.getItem(KEYS.xp)) || 0);
+    const xp = Math.max(0, Number(accountStorage.getItem(KEYS.xp)) || 0);
 
     const tasks = current.length;
     const previousTasks = previous.length;

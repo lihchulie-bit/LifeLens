@@ -1,5 +1,7 @@
 "use strict";
 
+import { accountStorage } from "./account-storage.js";
+
 import {
     formatMinutesAsTime
 } from "./utils.js";
@@ -159,7 +161,7 @@ function createOfflineResponse(question) {
 function safelyReadJSON(storageKey, fallbackValue) {
     try {
         const savedValue =
-            localStorage.getItem(storageKey);
+            accountStorage.getItem(storageKey);
 
         if (!savedValue) {
             return fallbackValue;
@@ -297,7 +299,7 @@ function buildAchievementSummary({ xp, streak, completionHistory, generationCoun
         .map((date) => date.getHours());
     let chatMessages = 0;
     try {
-        const chats = JSON.parse(localStorage.getItem("lifelens-chat-sessions-v1") || "[]");
+        const chats = JSON.parse(accountStorage.getItem("lifelens-chat-sessions-v1") || "[]");
         chatMessages = chats.reduce((sum, chat) => sum + (chat?.messages?.length || 0), 0);
     } catch {}
     const definitions = [
@@ -555,8 +557,8 @@ function buildLifeLensContext() {
     const completionHistory = safelyReadJSON("lifelens-completion-history-v1", []);
     const streakActivity = safelyReadJSON("lifelens-streak-activity-v1", {});
     const dailyReviews = safelyReadJSON("lifelens-daily-reviews", {});
-    const xp = Math.max(0, Number(localStorage.getItem("lifelens-planner-xp")) || 0);
-    const generationCount = Math.max(0, Number(localStorage.getItem("lifelens-planner-generation-count-v1")) || 0);
+    const xp = Math.max(0, Number(accountStorage.getItem("lifelens-planner-xp")) || 0);
+    const generationCount = Math.max(0, Number(accountStorage.getItem("lifelens-planner-generation-count-v1")) || 0);
     const streak = getCurrentStreak(streakActivity);
     const level = calculateLevelSummary(xp);
     const timing = summarizeTimingHistory(learningHistory);
@@ -1244,7 +1246,7 @@ function appendMessage(
             draftButton.textContent = "Review in planner";
             draftButton.title = "Load this suggestion into the planner form without generating it";
             draftButton.addEventListener("click", () => {
-                localStorage.setItem(
+                accountStorage.setItem(
                     "lifelens-assistant-plan-draft-v1",
                     JSON.stringify(plannerDraft)
                 );
@@ -1383,7 +1385,7 @@ function createNewChatSession() {
 function loadChatSessions() {
     try {
         const parsed = JSON.parse(
-            localStorage.getItem(CHAT_STORAGE_KEY) || "[]"
+            accountStorage.getItem(CHAT_STORAGE_KEY) || "[]"
         );
 
         chatSessions = Array.isArray(parsed)
@@ -1402,7 +1404,7 @@ function loadChatSessions() {
         chatSessions = [createNewChatSession()];
     }
 
-    const savedActiveId = localStorage.getItem(ACTIVE_CHAT_KEY);
+    const savedActiveId = accountStorage.getItem(ACTIVE_CHAT_KEY);
     activeChatId = chatSessions.some((chat) => chat.id === savedActiveId)
         ? savedActiveId
         : chatSessions[0].id;
@@ -1410,11 +1412,11 @@ function loadChatSessions() {
 
 function saveChatSessions() {
     try {
-        localStorage.setItem(
+        accountStorage.setItem(
             CHAT_STORAGE_KEY,
             JSON.stringify(chatSessions)
         );
-        localStorage.setItem(ACTIVE_CHAT_KEY, activeChatId || "");
+        accountStorage.setItem(ACTIVE_CHAT_KEY, activeChatId || "");
     } catch (error) {
         console.warn("Could not save chats:", error);
     }

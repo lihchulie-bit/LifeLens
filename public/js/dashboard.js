@@ -1,5 +1,7 @@
 "use strict";
 
+import { accountStorage } from "./account-storage.js";
+
 import {
     getLearningHistory
 } from "./learning.js";
@@ -943,12 +945,12 @@ function getCompletionStorageKey(taskName) {
 }
 
 function taskIsCompleted(taskName) {
-    return localStorage.getItem(getCompletionStorageKey(taskName)) === "true";
+    return accountStorage.getItem(getCompletionStorageKey(taskName)) === "true";
 }
 
 function loadPlannerSnapshot() {
     try {
-        const parsed = JSON.parse(localStorage.getItem(PLANNER_STORAGE_KEY) || "null");
+        const parsed = JSON.parse(accountStorage.getItem(PLANNER_STORAGE_KEY) || "null");
         return parsed && typeof parsed === "object" ? parsed : null;
     } catch (error) {
         console.error("Could not load planner snapshot:", error);
@@ -958,7 +960,7 @@ function loadPlannerSnapshot() {
 
 function loadDailyReviews() {
     try {
-        const parsed = JSON.parse(localStorage.getItem(DAILY_REVIEW_STORAGE_KEY) || "{}");
+        const parsed = JSON.parse(accountStorage.getItem(DAILY_REVIEW_STORAGE_KEY) || "{}");
         return parsed && typeof parsed === "object" ? parsed : {};
     } catch (error) {
         console.error("Could not load daily reviews:", error);
@@ -967,7 +969,7 @@ function loadDailyReviews() {
 }
 
 function saveDailyReviews(reviews) {
-    localStorage.setItem(DAILY_REVIEW_STORAGE_KEY, JSON.stringify(reviews));
+    accountStorage.setItem(DAILY_REVIEW_STORAGE_KEY, JSON.stringify(reviews));
 }
 
 function getDashboardScheduleTaskId(item, scheduleDate) {
@@ -1136,7 +1138,7 @@ function initializeDailyReview(history) {
             return { ...item, dateOffset: 1, rescheduled: true, rescheduledAt: new Date().toISOString() };
         });
         planner.savedAt = new Date().toISOString();
-        localStorage.setItem(PLANNER_STORAGE_KEY, JSON.stringify(planner));
+        accountStorage.setItem(PLANNER_STORAGE_KEY, JSON.stringify(planner));
         elements.message.textContent = moved > 0 ? `${moved} unfinished task${moved === 1 ? " was" : "s were"} moved to tomorrow. Open the planner to view the updated schedule.` : "There were no unfinished tasks to move.";
         review = createDailyReview(getLearningHistory());
         render();
@@ -1187,7 +1189,7 @@ function loadSavedReviews(){
     try{
 
         return JSON.parse(
-            localStorage.getItem(
+            accountStorage.getItem(
                 DAILY_REVIEW_STORAGE_KEY
             ) || "{}"
         );
@@ -1207,7 +1209,7 @@ const STREAK_ACTIVITY_STORAGE_KEY =
 function loadPlannerStreakActivity() {
     try {
         const saved = JSON.parse(
-            localStorage.getItem(
+            accountStorage.getItem(
                 STREAK_ACTIVITY_STORAGE_KEY
             ) || "{}"
         );
@@ -1776,7 +1778,7 @@ const LEVEL_RANKS = [
 function loadCompletionHistory() {
     try {
         const parsed = JSON.parse(
-            localStorage.getItem(COMPLETION_HISTORY_STORAGE_KEY) || "[]"
+            accountStorage.getItem(COMPLETION_HISTORY_STORAGE_KEY) || "[]"
         );
 
         return Array.isArray(parsed) ? parsed : [];
@@ -1788,7 +1790,7 @@ function loadCompletionHistory() {
 function getPlannerXP() {
     return Math.max(
         0,
-        Number(localStorage.getItem("lifelens-planner-xp")) || 0
+        Number(accountStorage.getItem("lifelens-planner-xp")) || 0
     );
 }
 
@@ -1844,7 +1846,7 @@ let achievementPopupTimeout;
 function getChatMessageCount() {
     try {
         const chats = JSON.parse(
-            localStorage.getItem("lifelens-chat-sessions-v1") || "[]"
+            accountStorage.getItem("lifelens-chat-sessions-v1") || "[]"
         );
         return chats.reduce(
             (total, chat) => total + (Array.isArray(chat?.messages) ? chat.messages.length : 0),
@@ -1866,7 +1868,7 @@ function getAchievementMetrics() {
     const completionCount = Math.max(history.length, Math.floor(plannerXP / 10));
     const generationCount = Math.max(
         0,
-        Number(localStorage.getItem(PLANNER_GENERATION_COUNT_KEY)) || 0
+        Number(accountStorage.getItem(PLANNER_GENERATION_COUNT_KEY)) || 0
     );
     const completedDates = history
         .map((record) => normalizeDate(record?.completedAt))
@@ -1959,7 +1961,7 @@ function getAchievementData() {
 
 function loadAchievementHistory() {
     try {
-        const value = JSON.parse(localStorage.getItem(ACHIEVEMENT_HISTORY_KEY) || "{}");
+        const value = JSON.parse(accountStorage.getItem(ACHIEVEMENT_HISTORY_KEY) || "{}");
         return value && typeof value === "object" ? value : {};
     } catch {
         return {};
@@ -1967,7 +1969,7 @@ function loadAchievementHistory() {
 }
 
 async function saveAchievementState(achievements, history) {
-    localStorage.setItem(ACHIEVEMENT_HISTORY_KEY, JSON.stringify(history));
+    accountStorage.setItem(ACHIEVEMENT_HISTORY_KEY, JSON.stringify(history));
     if (!achievementCloudUser) return;
     try {
         await setDoc(
@@ -2105,7 +2107,7 @@ onAuthStateChanged(auth, async (user) => {
         const cloudHistory = snapshot.data()?.gamification?.achievementHistory;
         if (cloudHistory && typeof cloudHistory === "object") {
             const localHistory = loadAchievementHistory();
-            localStorage.setItem(
+            accountStorage.setItem(
                 ACHIEVEMENT_HISTORY_KEY,
                 JSON.stringify({ ...cloudHistory, ...localHistory })
             );
@@ -2130,7 +2132,7 @@ function renderXPSystem() {
 
     const totalXP = calculateTotalXP();
     const levelData = calculateLevelData(totalXP);
-    const storedPreviousLevel = localStorage.getItem("lifelens-previous-level");
+    const storedPreviousLevel = accountStorage.getItem("lifelens-previous-level");
     const previousLevel = storedPreviousLevel === null
         ? levelData.level
         : Number(storedPreviousLevel);
@@ -2161,7 +2163,7 @@ function renderXPSystem() {
         showLevelUpPopup(levelData);
     }
 
-    localStorage.setItem(
+    accountStorage.setItem(
         "lifelens-previous-level",
         String(levelData.level)
     );

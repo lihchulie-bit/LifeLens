@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "lifelens-cache-v53-study-insights-taskid-duration";
+const CACHE_NAME = "lifelens-cache-v54-account-isolation";
 const OFFLINE_URL = "./offline.html";
 
 const CORE_FILES = [
@@ -9,7 +9,7 @@ const CORE_FILES = [
   "./pwa-ui.css", "./manifest.json", "./js/main.js", "./js/auth.js",
   "./js/firebase.js", "./js/planner.js", "./js/analysis.js", "./js/assistant.js",
   "./js/focus.js", "./js/learning.js", "./js/dashboard.js", "./js/parser.js",
-  "./js/storage.js", "./js/utils.js", "./js/landing.js", "./js/pwa.js", "./js/insights.js",
+  "./js/storage.js", "./js/account-storage.js", "./js/utils.js", "./js/landing.js", "./js/pwa.js", "./js/insights.js",
   "./assets/logo.png", "./assets/icon-192.png", "./assets/icon-512.png",
   "./assets/icon-maskable-512.png"
 ];

@@ -7305,3 +7305,24 @@ body[data-theme="dark"] .auth-secondary-button:focus-visible {
         grid-template-columns: 1fr;
     }
 }
+
+/* Keep AI Markdown bold text inside the same sentence */
+.assistant-message-content strong {
+    display: inline !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit !important;
+}
+
+/* Keep response paragraphs natural */
+.assistant-message-content p {
+    display: block;
+    margin: 0 0 0.85rem;
+    line-height: 1.65;
+    white-space: normal;
+}
+
+.assistant-message-content p:last-child {
+    margin-bottom: 0;
+}
