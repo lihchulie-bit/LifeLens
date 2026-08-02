@@ -279,20 +279,26 @@ async function discoverFreeModels() {
 }
 
 async function getModelCandidates() {
-    const configured = getConfiguredModels();
-    const discovered = await discoverFreeModels();
+    const configuredModels = getConfiguredModels();
+
+    const defaultModels = [
+        "nvidia/nemotron-3-super-120b-a12b:free",
+        "openrouter/free"
+    ];
+
     const candidates = [
         ...new Set([
-            ...configured,
-            "openrouter/free",
-            ...discovered
+            ...configuredModels,
+            ...defaultModels
         ])
     ];
 
-    const healthy = candidates.filter((model) => !isModelCoolingDown(model));
+    const healthyModels = candidates.filter(
+        (model) => !isModelCoolingDown(model)
+    );
 
-// OpenRouter allows at most 3 models in the fallback list.
-return (healthy.length > 0 ? healthy : candidates).slice(0, 3);
+    // OpenRouter currently accepts no more than 3 fallback models.
+    return (healthyModels.length > 0 ? healthyModels : candidates).slice(0, 3);
 }
 
 function parseRetryAfter(response) {
