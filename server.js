@@ -25,22 +25,26 @@ const openrouter = new OpenAI({
 });
 
 app.use(
-    express.text({
+    express.raw({
         type: "application/json",
         limit: "100kb"
     })
 );
 
 app.use((req, res, next) => {
-    if (typeof req.body === "string") {
+    if (Buffer.isBuffer(req.body)) {
+        try {
+            req.body = JSON.parse(req.body.toString("utf8"));
+        } catch {
+            req.body = {};
+        }
+    } else if (typeof req.body === "string") {
         try {
             req.body = JSON.parse(req.body);
         } catch {
             req.body = {};
         }
-    }
-
-    if (!req.body || typeof req.body !== "object") {
+    } else if (!req.body || typeof req.body !== "object") {
         req.body = {};
     }
 
@@ -556,7 +560,15 @@ app.post("/api/chat", async (req, res) => {
             });
         }
 
-        let requestBody = req.body;
+        let requestBody = req.body || {};
+
+if (Buffer.isBuffer(requestBody)) {
+    try {
+        requestBody = JSON.parse(requestBody.toString("utf8"));
+    } catch {
+        requestBody = {};
+    }
+}
 
 if (typeof requestBody === "string") {
     try {
