@@ -298,7 +298,7 @@ async function getModelCandidates() {
     );
 
     // OpenRouter currently accepts no more than 3 fallback models.
-    return (healthyModels.length > 0 ? healthyModels : candidates).slice(0, 3);
+    return (healthy.length > 0 ? healthy : candidates).slice(0, 3);
 }
 
 function parseRetryAfter(response) {
@@ -348,7 +348,7 @@ async function createCoachCompletion({
         : "";
 
     const body = {
-         models: models.slice(0, 3),
+    models: models.slice(0, 3),
         messages: [
             {
                 role: "system",
