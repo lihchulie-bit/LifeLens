@@ -1,5 +1,4 @@
 [build]
-  base = "AI WEB DEVELOPMENT"
   command = "npm install"
   publish = "public"
 
