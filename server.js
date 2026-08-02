@@ -4,7 +4,6 @@ require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
-const OpenAI = require("openai");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,15 +13,6 @@ if (!process.env.OPENROUTER_API_KEY) {
         "OPENROUTER_API_KEY is not configured. AI requests will return a setup error."
     );
 }
-
-const openrouter = new OpenAI({
-    apiKey: process.env.OPENROUTER_API_KEY,
-    baseURL: "https://openrouter.ai/api/v1",
-    defaultHeaders: {
-        "HTTP-Referer": process.env.URL || "http://localhost:3000",
-        "X-Title": "LifeLens AI"
-    }
-});
 
 app.use(express.json({ limit: "100kb" }));
 
@@ -299,7 +289,11 @@ async function getModelCandidates() {
     );
 
     // OpenRouter currently accepts no more than 3 fallback models.
-    return (healthy.length > 0 ? healthy : candidates).slice(0, 3);
+    return (
+    healthyModels.length > 0
+        ? healthyModels
+        : candidates
+).slice(0, 3);
 }
 
 function parseRetryAfter(response) {
