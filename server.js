@@ -535,21 +535,31 @@ app.post("/api/chat", async (req, res) => {
             });
         }
 
-        const message =
-            typeof req.body.message === "string"
-                ? req.body.message.trim()
-                : "";
+        let requestBody = req.body;
 
-        const context =
-            req.body.context &&
-            typeof req.body.context === "object"
-                ? req.body.context
-                : {};
+if (typeof requestBody === "string") {
+    try {
+        requestBody = JSON.parse(requestBody);
+    } catch {
+        requestBody = {};
+    }
+}
 
-        const history =
-            Array.isArray(req.body.history)
-                ? req.body.history.slice(-10)
-                : [];
+const message =
+    typeof requestBody?.message === "string"
+        ? requestBody.message.trim()
+        : "";
+
+const context =
+    requestBody?.context &&
+    typeof requestBody.context === "object"
+        ? requestBody.context
+        : {};
+
+const history =
+    Array.isArray(requestBody?.history)
+        ? requestBody.history.slice(-10)
+        : [];
 
         if (!message) {
             return res.status(400).json({
