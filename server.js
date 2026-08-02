@@ -24,7 +24,28 @@ const openrouter = new OpenAI({
     }
 });
 
-app.use(express.json({ limit: "100kb" }));
+app.use(
+    express.text({
+        type: "application/json",
+        limit: "100kb"
+    })
+);
+
+app.use((req, res, next) => {
+    if (typeof req.body === "string") {
+        try {
+            req.body = JSON.parse(req.body);
+        } catch {
+            req.body = {};
+        }
+    }
+
+    if (!req.body || typeof req.body !== "object") {
+        req.body = {};
+    }
+
+    next();
+});
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/api/test", (req, res) => {
